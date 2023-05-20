@@ -5,11 +5,8 @@ import MuiDrawer from "@mui/material/Drawer";
 import MuiAppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
-import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
-import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ListItem from "@mui/material/ListItem";
@@ -17,10 +14,17 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import { Home, Search } from "@mui/icons-material";
+import PrimaryGradientButton from "../primaryGrandientButton";
+import SecondatyGradientButton from "../secondaryGrandientButton";
+import logo from "./Brand.png";
+import LoginButton from "../loginButton";
+import CreateAccountButton from "../createAccountButton";
+import AppBarActions from "../appBarActions";
 
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
+  border: "none",
   width: drawerWidth,
   backgroundColor: "#212121",
   transition: theme.transitions.create("width", {
@@ -31,6 +35,7 @@ const openedMixin = (theme) => ({
 });
 
 const closedMixin = (theme) => ({
+  border: "none",
   backgroundColor: "#212121",
   transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,
@@ -90,54 +95,24 @@ const Drawer = styled(MuiDrawer, {
 
 export default function MiniDrawer() {
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
-
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
 
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <AppBar position="fixed" open={open}>
+      <AppBar position="fixed" elevation={0}>
         <Toolbar
           sx={{
             display: "flex",
             justifyContent: "space-between",
-            ...(open && { justifyContent: "end" }),
           }}
         >
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            sx={{
-              marginRight: 5,
-              ...(open && { display: "none" }),
-            }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              gap: "30px",
-            }}
-          >
-            <Button variant="contained">Criar Conta</Button>
-            <Button variant="contained">Fazer Login</Button>
-          </div>
+          <img src={logo} alt="logo" />
+          <AppBarActions actions={[<CreateAccountButton />, <LoginButton />]} />
         </Toolbar>
       </AppBar>
-      <Drawer variant="permanent" open={open}>
+      <Drawer variant="permanent">
         <DrawerHeader>
-          <IconButton sx={{ color: "#fff" }} onClick={handleDrawerClose}>
+          <IconButton sx={{ color: "#fff" }}>
             {theme.direction === "rtl" ? (
               <ChevronRightIcon />
             ) : (
@@ -145,15 +120,21 @@ export default function MiniDrawer() {
             )}
           </IconButton>
         </DrawerHeader>
-        <Divider />
-        <List>
+        <List
+          sx={{
+            height: "100%",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+          }}
+        >
           {["Home", "Search"].map((text, index) => (
             <ListItem key={text} disablePadding sx={{ display: "block" }}>
               <ListItemButton
                 sx={{
                   color: "#fff",
                   minHeight: 48,
-                  justifyContent: open ? "initial" : "center",
+                  justifyContent: "center",
                   px: 2.5,
                 }}
               >
@@ -161,13 +142,13 @@ export default function MiniDrawer() {
                   sx={{
                     color: "#FAFAFA",
                     minWidth: 0,
-                    mr: open ? 3 : "auto",
+                    mr: "auto",
                     justifyContent: "center",
                   }}
                 >
                   {index % 2 === 0 ? <Home /> : <Search />}
                 </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+                <ListItemText primary={text} sx={{ opacity: 0 }} />
               </ListItemButton>
             </ListItem>
           ))}
